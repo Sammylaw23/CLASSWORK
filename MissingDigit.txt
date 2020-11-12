@@ -1,0 +1,149 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp3
+{
+    public class Calculation
+    {
+
+
+        //Have the function MissingDigit(str) take the str parameter, which will be a simple mathematical formula with three numbers, 
+        //a single operator (+, -, *, or /) and an equal sign(=) and return the digit that completes the equation.In one of the numbers 
+        //    in the equation, there will be an x character, and your program should determine what digit is missing.For example, 
+        //    if str is "3x + 12 = 46" then your program should output 4. The x character can appear in any of the three numbers 
+        //    and all three numbers will be greater than or equal to 0 and less than or equal to 1000000.
+
+
+        //Examples
+
+        //Input: "4 - 2 = x"
+        //Output: 2
+        //Input: "1x0 * 12 = 1200"
+        //Output: 0
+
+
+
+
+
+        public int MissingDigit(string str)
+        {
+
+            string firstPar, secondPar;
+
+            string leftSide = str.Split('=')[0]; //3x + 12;
+            string afterEqualsSign = str.Split('=')[1]; //46
+            double sum = 0.0;
+            string missingNum = string.Empty;
+            string _operator = "";
+
+            if (leftSide.Contains("+"))
+            {
+                firstPar = leftSide.Split('+')[0];
+                secondPar = leftSide.Split('+')[1];
+
+                if (afterEqualsSign.Contains("x"))
+                {
+                    //compute and compare
+                    sum = Convert.ToDouble(firstPar) + Convert.ToDouble(secondPar);
+                    missingNum = GetMissingNum(sum.ToString(), afterEqualsSign);
+                }
+                else
+                {
+                    int tempAns = 0;
+                    if (firstPar.Contains("x"))
+                        tempAns = Convert.ToInt32(afterEqualsSign) - Convert.ToInt32(secondPar);
+                    if (secondPar.Contains("x"))
+                        tempAns = Convert.ToInt32(afterEqualsSign) - Convert.ToInt32(firstPar);
+
+                    missingNum = GetMissingNum(firstPar, tempAns.ToString());
+                }
+            }
+
+            else if (leftSide.Contains("-"))
+            {
+                firstPar = leftSide.Split('-')[0];
+                secondPar = leftSide.Split('-')[1];
+
+                if (afterEqualsSign.Contains("x"))
+                {
+                    //compute and compare
+                    sum = Convert.ToDouble(firstPar) + Convert.ToDouble(secondPar);
+                    missingNum = GetMissingNum(sum.ToString(), afterEqualsSign);
+                }
+            }
+
+
+            //if (!IsNumeric(firstPar))
+            //    (afterEqualsSign - secondPar) / firstPar.Remove("x");
+
+            //else if (!IsNumeric(secondPar))
+            //    (afterEqualsSign - firstPar) / firstPar.Remove("x");
+
+
+            if (leftSide.Contains("-"))
+            {
+                firstPar = leftSide.Split('+')[0];
+                secondPar = leftSide.Split('+')[1];
+
+            }
+
+            if (leftSide.Contains("*"))
+            {
+                firstPar = leftSide.Split('+')[0];
+                secondPar = leftSide.Split('+')[1];
+
+
+            }
+
+            if (leftSide.Contains("/"))
+            {
+                firstPar = leftSide.Split('+')[0];
+                secondPar = leftSide.Split('+')[1];
+            }
+
+            //3x + 12;
+
+            return Convert.ToInt32(missingNum);
+
+        }
+
+        private string GetMissingNum(string first, string second)
+        {
+            List<string> firstList = new List<string>();
+            List<string> secondList = new List<string>();
+            string missingNum = string.Empty;
+
+            firstList = string.Join<char>(",", first).Split(',').ToList();
+            secondList = string.Join<char>(",", second).Split(',').ToList();
+
+            if (firstList.Contains("x"))
+            {
+                foreach (var item in firstList)
+                    secondList.Remove(item).ToString();
+
+                missingNum = secondList.FirstOrDefault();
+                firstList.ToString().Replace("x", missingNum);
+            }
+            else if (secondList.Contains("x"))
+            {
+                foreach (var item in firstList)
+                    firstList.Remove(item).ToString();
+
+                missingNum = firstList.FirstOrDefault();
+                secondList.ToString().Replace("x", missingNum);
+
+            }
+
+            return missingNum;
+
+
+        }
+
+
+
+
+    }
+}
